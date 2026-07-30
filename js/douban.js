@@ -52,6 +52,7 @@ let doubanMovieTvCurrentSwitch = 'movie';
 let doubanCurrentTag = '热门';
 let doubanPageStart = 0;
 const doubanPageSize = 16; // 一次显示的项目数量
+const DOUBAN_IMAGE_PROXY_VERSION = '2'; // Bump when the cached poster representation changes.
 
 // 初始化豆瓣功能
 function initDouban() {
@@ -559,7 +560,7 @@ function renderDoubanCards(data, container) {
             `;
             const coverImage = card.querySelector('img');
             coverImage.addEventListener('error', async () => {
-                const baseProxiedUrl = PROXY_URL + encodeURIComponent(originalCoverUrl);
+                const baseProxiedUrl = `${PROXY_URL}${encodeURIComponent(originalCoverUrl)}?v=${DOUBAN_IMAGE_PROXY_VERSION}`;
                 coverImage.classList.add('object-contain');
                 coverImage.src = window.ProxyAuth?.addAuthToProxyUrl
                     ? await window.ProxyAuth.addAuthToProxyUrl(baseProxiedUrl)
